@@ -11,10 +11,18 @@ header{
     background-color : #cccccc;
 }
 
+.duplicate__contents {
+	text-align: left;
+    padding: 0px 5px;
+}
 
 .contents > .input-box {
     width : 400px;
     background-color : #cccccc;    
+}
+
+.contents > .post-box {
+	width : 800px;
 }
 
 footer {

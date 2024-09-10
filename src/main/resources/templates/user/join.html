@@ -6,18 +6,55 @@
 
     <section layout:fragment="contents" class="contents d-flex justify-content-center">
         <div class="input-box my-5 p-5 rounded-lg">
+        <div class="w-100 p-4">
             <h2 class="text-center">회원 가입</h2>
-            <input type="text" placeholder="아이디" class="form-control mt-4" id="idInput">
+            <div class="d-flex mt-3 justify-content-between">
+            <input type="text" placeholder="아이디" class="form-control col-8 mt-4" id="idInput">
+            <button type="button" class="btn btn-info btn-sm col-4 h-30 mt-4" id="duplicateBtn">중복확인</button>
+            </div>
+            <div class="small text-success d-none" id="availableText">사용 가능한 ID 입니다.</div>
+            <div class="small text-danger d-none" id="duplicateText">중복된 ID 입니다.</div>
             <input type="password" placeholder="비밀번호" class="form-control mt-2" id="passwordInput">
             <input type="password" placeholder="비밀번호 확인" class="form-control mt-2" id="passwordConfirmInput">
             <input type="text" placeholder="이름" class="form-control mt-2" id="nameInput">
             <input type="text" placeholder="이메일 주소" class="form-control mt-2" id="emailInput">
             <button type="button" class="btn btn-secondary btn-block mt-3" id="joinBtn">가입</button>
         </div>
+        </div>
     </section>
     
     <script layout:fragment="script">
     $(document).ready(function() {
+    	
+    	
+    	$("#duplicateBtn").on("click", function() {
+    		let id= $("#idInput").val();
+    		
+    		if (id == "") {
+                alert("아이디를 입력하세요.");
+                return;
+            }
+    		
+    		$.ajax({
+    			type : "get"
+    			, url : "/user/duplicate-id"
+    			, data : {"loginId" : id}
+    			, success: function(data) {
+    				if(data.isDuplicate) {
+    					$("#duplicateText").removeClass("d-none");
+    					$("#availableText").addClass("d-none");
+    				}else {
+    					$("#availableText").removeClass("d-none");
+    					$("#duplicateText").addClass("d-none");
+    				}
+    			}
+    			, error : function() {
+    				alert("중복 확인 에러!");
+    			}
+    		});
+    		
+    	});
+    	
         $("#joinBtn").on("click", function() {
             let id = $("#idInput").val();
             let password = $("#passwordInput").val();
